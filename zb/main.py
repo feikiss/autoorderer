@@ -1,40 +1,15 @@
 # -*- coding: utf-8 -*-
-import urllib
-import urllib2
-import json
-import time
-accesskey=''
-currency='ink_usdt'
+from zb.zb_api import zb_api
+from zb.coinnest_api import coinnest_api
 
-class CZB():
-    
-    def get_orders(self):
-        zb_url = 'https://trade.zb.com/api/getOrdersNew'
-        param_map = {'accesskey':accesskey,
-                     'currency':currency,
-                     'method':'getOrdersNew',
-                     'pageIndex':1,
-                     'pageSize':15,
-                     'tradeType':0,
-                     'reqTime':round(time.time() * 1000)}
-#         ?accesskey=youraccesskey
-# &currency=ltc_btc&method=getOrdersNew&pageIndex=1&pageSize=1&tradeType=1
-#     &sign=请求加密签名串&reqTime=当前时间毫秒数】
-    
-    def combine_url_param(self,url,param_map):
-        param_str = ''
-        str_and = "&"
-        kv_arr = []
-        for k,v in param_map.items():
-            arr = (str(k),str(v))
-            kv_arr.append("=".join(arr))
-        
-        param_str = str_and.join(kv_arr)
-        full_ful = "?".join((url,param_str))
-        return full_ful
-    
-url = "www.baidu.com"
-param_map = {'fly':123,
-             'name':"haha"}
-z = CZB()
-print z.combine_url_param(url, param_map)
+compare_arr = ['etc','ink']
+sign=''
+private_key=''
+zbapi = zb_api(sign,private_key)
+coinnestapi = coinnest_api(sign,private_key)
+for market in compare_arr:
+    print market
+    zb_tricker = zbapi.get_pub_tricker(market)
+    coinnest_tricker = coinnestapi.get_pub_tricker(market)
+    print 'zb avg ask:',zb_tricker.ask_ticket.avg_price
+    print 'coinnest avg ask:',coinnest_tricker.ask_ticket.avg_price
