@@ -141,14 +141,16 @@ class zb_api:
         doc = self.get_pub_depth(market)
         bid_arr = doc.get('bids')
         ask_arr = doc.get('asks')
+        print 'bid:'
         bid_ticket = self.__get_ticket(bid_arr)
+        print 'ask:'
         ask_ticket = self.__get_ticket(ask_arr)
         zb_tricker = tricker(ask_ticket, bid_ticket, 'etc')
         return zb_tricker
     
     def __get_ticket(self,ticket_arr):
-        first_bid = ticket_arr[0]
-        last_bid = ticket_arr[-1]
+        first_bid = ticket_arr[0][0]
+        last_bid = ticket_arr[-1][0]
         bid_ticket_amount = 0
         bid_price_total = 0
         t_ticket = ticket(first_bid[0], last_bid[0], 0)
